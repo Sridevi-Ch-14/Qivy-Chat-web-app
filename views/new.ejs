@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qivy | New Chat ✍️</title>
+    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Scribble&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Rubik+Bubbles&family=Rubik+Spray+Paint&family=Truculenta:opsz,wght@12..72,100..900&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+
+
+    <nav class="navbar">
+    <div class="nav-logo">Qivy 💬</div>
+    <div class="nav-links">
+      <a href="/" class="nav-link">🏠 Home</a>
+      <a href="/chats" class="nav-link">💬 View Chats</a>
+      <a href="/chats/new" class="nav-link">✍️ Create Chat</a>
+    </div>
+  </nav>
+
+  <br><br>
+
+
+    <h2>Write new chat...</h2>
+
+    <form method="POST" action="/chats" class="general-form">
+        <input placeholder="Your name" name="from"><br><br>
+        <textarea placeholder="Type your msg here" name="msg"></textarea><br><br>
+        <input placeholder="Send to..." name="to"><br><br>
+        <button>Create chat</button>
+    </form>
+
+</body>
+</html>

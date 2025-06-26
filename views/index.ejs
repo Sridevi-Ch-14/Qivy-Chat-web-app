@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qivy | View Chats 🧾</title>
+    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Scribble&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Rubik+Bubbles&family=Rubik+Spray+Paint&family=Truculenta:opsz,wght@12..72,100..900&display=swap" rel="stylesheet">
+
+
+</head>
+</head>
+<body>
+
+    <nav class="navbar">
+    <div class="nav-logo">Qivy 💬</div>
+    <div class="nav-links">
+      <a href="/" class="nav-link">🏠 Home</a>
+      <a href="/chats" class="nav-link">💬 View Chats</a>
+      <a href="/chats/new" class="nav-link">✍️ Create Chat</a>
+    </div>
+  </nav>
+
+  <br><br>
+    <h3>View all chats</h3>
+
+    <div class="allChats">
+    <form method="get" action="/chats/new"> 
+        <button>New Chat!</button>
+    </form>
+    <br>
+
+    <% for(let chat of chats){ %>
+        <div class="chat">
+            <p>To: <%= chat.to  %></p>
+            <div class="msg"> 
+                <p class="message">Message: <%= chat.msg  %></p>
+
+                <form method="GET" action="/chats/<%= chat._id %>/edit">
+                    <button>Edit</button>
+                </form>
+
+                <form method="POST" action="/chats/<%= chat._id %>?_method=DELETE">
+                    <button>Delete</button>
+                </form>
+            </div>
+
+            <p>Sent by: <%= chat.from %></p>
+            <p><%= chat.created_at.toString().split(" ")[4] %> <%= chat.created_at.toString().split(" ").slice(1,4).join("-") %></p>
+
+            <!-- 👇 Emoji Reactions -->
+            <form method="POST" action="/chats/<%= chat._id %>/react" style="margin-top: 10px;">
+                <% const emojis = ['👍', '😂', '😮', '😢', '😠']; %>
+                <% for(let emoji of emojis) { %>
+                    <button name="emoji" value="<%= emoji %>">
+                        <%= emoji %> <%= chat.reactions && chat.reactions.get(emoji) || 0 %>
+                    </button>
+                <% } %>
+            </form>
+
+            <br>
+
+            <!-- 👇 Collapsible Replies -->
+            <% if (chat.replies && chat.replies.length > 0) { %>
+                <button class="toggle-replies-btn" onclick="toggleReplies('<%= chat._id %>')">
+                    Show Replies (<%= chat.replies.length %>)
+                </button>
+
+                <div class="replies" id="replies-<%= chat._id %>" style="display: none; margin-top: 10px;">
+                    <p><strong>Replies:</strong></p>
+                    <% for(let reply of chat.replies) { %>
+                        <div class="reply">
+                            <p><%= reply.msg %> — <em><%= reply.from %></em> at <%= reply.created_at.toString().split(" ")[4] %></p>
+                            <form method="POST" action="/chats/<%= chat._id %>/replies/<%= reply._id %>?_method=DELETE" style="display:inline;">
+                <button>Delete</button>
+            </form>
+                        </div>
+                        
+                    <% } %>
+                </div>
+            <% } %>
+
+            <!-- 👇 Reply Toggle Button -->
+<button class="toggle-reply-form-btn" onclick="toggleReplyForm('<%= chat._id %>')">
+    Reply 💬
+</button>
+
+<!-- 👇 Hidden Reply Form -->
+<div class="reply-form-container" id="reply-form-<%= chat._id %>" style="display: none; margin-top: 10px;">
+    <form method="POST" action="/chats/<%= chat._id %>/replies" class="general-form">
+        <input type="text" name="from" placeholder="Your name" required>
+        <input type="text" name="msg" placeholder="Reply..." required>
+        <button type="submit">Reply</button>
+    </form>
+</div>
+
+
+            <hr>
+        </div>
+        </div>
+    <% } %>
+    <script src="/app.js"></script>
+</body>
+</html>
