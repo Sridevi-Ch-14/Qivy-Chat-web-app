@@ -15,15 +15,17 @@ app.use(express.static(path.join(__dirname,"public")));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
 
-main().then(()=>{
-    console.log("Connection successful");
-})
-.catch(err => console.log(err));
+require('dotenv').config();
 
-async function main() {
-  await mongoose.connect(process.env.MONGO_URL);
-
+const mongoURI = process.env.MONGODB_URI;
+if (!mongoURI) {
+  console.error("MONGODB_URI not found. Check your .env or Render config.");
+  process.exit(1);
 }
+
+mongoose.connect(mongoURI)
+  .then(() => console.log(" Connected to MongoDB"))
+  .catch(err => console.error(" Connection error:", err));
 
 
 //Index Route:
